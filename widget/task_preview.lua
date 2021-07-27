@@ -103,12 +103,14 @@ local enable = function(opts)
         bg = "#00000000"
     })
 
+    task_preview_box.placement_fn = placement_fn
+
     awesome.connect_signal("bling::task_preview::visibility", function(s, v, c)
         draw_widget(c, task_preview_box, screen_radius, widget_bg,
                     widget_border_color, widget_border_width, margin)
 
-        if placement_fn then
-            placement_fn(task_preview_box)
+        if task_preview_box.placement_fn then
+            task_preview_box.placement_fn(task_preview_box)
         else
             task_preview_box.x = s.geometry.x + widget_x
             task_preview_box.y = s.geometry.y + widget_y
@@ -116,6 +118,8 @@ local enable = function(opts)
 
         task_preview_box.visible = v
     end)
+
+    return task_preview_box
 end
 
 return {enable = enable}
